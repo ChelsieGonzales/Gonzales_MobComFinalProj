@@ -6,14 +6,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,7 +59,7 @@ fun HomeScreen(navController: NavHostController) {
                         listOf(Color(0xFF1A237E), Color(0xFF303F9F))
                     )
                 )
-                .padding(vertical = 30.dp, horizontal = 24.dp)
+                .padding(vertical = 40.dp, horizontal = 24.dp)
         ) {
             Column {
                 Text(
@@ -108,11 +115,19 @@ fun HomeScreen(navController: NavHostController) {
                     }
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    Text(
-                        text = "Do not share this QR code with anyone.",
-                        fontSize = 12.sp,
-                        color = Color.Red
-                    )
+                    Card(
+                        shape = RoundedCornerShape(8.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFCDD2)),
+                        elevation = CardDefaults.cardElevation(0.dp)
+                    ) {
+                        Text(
+                            text = "⚠️ Do not share this QR code with anyone.",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFFC62828),
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                        )
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(30.dp))
@@ -127,12 +142,14 @@ fun HomeScreen(navController: NavHostController) {
                     FeatureCard(
                         title = "Next Event",
                         subtitle = "See what's coming",
+                        icon = Icons.Default.CalendarToday,
                         onClick = { navController.navigate("next_event") },
-                        gradientColors = listOf(Color(0xFF1A237E), Color(0xFF3949AB))
+                        gradientColors = listOf(Color(0xFF4CAF50), Color(0xFF388E3C))
                     )
                     FeatureCard(
                         title = "My Profile",
                         subtitle = "Student details",
+                        icon = Icons.Default.Person,
                         onClick = { navController.navigate("my_profile") },
                         gradientColors = listOf(Color(0xFF1A237E), Color(0xFF3949AB))
                     )
@@ -145,17 +162,19 @@ fun HomeScreen(navController: NavHostController) {
                     FeatureCard(
                         title = "Excuse Letter",
                         subtitle = "Submit request",
+                        icon = Icons.Default.Description,
                         onClick = { navController.navigate("excuse_letter") },
-                        gradientColors = listOf(Color(0xFF1A237E), Color(0xFF3949AB))
+                        gradientColors = listOf(Color(0xFF673AB7), Color(0xFF512DA8))
                     )
                     FeatureCard(
                         title = "Logout",
                         subtitle = "Sign out safely",
+                        icon = Icons.Default.ExitToApp,
                         onClick = {
                             auth.signOut()
                             navController.navigate("login") { popUpTo(0) }
                         },
-                        gradientColors = listOf(Color(0xFF1A237E), Color(0xFF3949AB))
+                        gradientColors = listOf(Color(0xFFE53935), Color(0xFFC62828))
                     )
                 }
             }
@@ -169,10 +188,12 @@ fun HomeScreen(navController: NavHostController) {
         }
     }
 }
+
 @Composable
 fun FeatureCard(
     title: String,
     subtitle: String,
+    icon: ImageVector,
     onClick: () -> Unit,
     gradientColors: List<Color>
 ) {
@@ -195,25 +216,35 @@ fun FeatureCard(
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.Start
             ) {
-                Text(
-                    text = title,
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
+                Icon(
+                    imageVector = icon,
+                    contentDescription = title,
+                    tint = Color.White,
+                    modifier = Modifier.size(32.dp)
                 )
 
-                Text(
-                    text = subtitle,
-                    fontSize = 13.sp,
-                    color = Color.White.copy(alpha = 0.8f)
-                )
+                Column {
+                    Text(
+                        text = title,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+
+                    Text(
+                        text = subtitle,
+                        fontSize = 13.sp,
+                        color = Color.White.copy(alpha = 0.8f)
+                    )
+                }
             }
         }
     }
 }
+
 @Composable
 fun GradientCard(
     title: String,
